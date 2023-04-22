@@ -284,7 +284,7 @@ if __name__ == "__main__":
     cv_execution_time = round(time.time()- cv_start,4)
     
     
-    print(f'{image_path}  {uf_execution_time} {cv_execution_time} ')
+    print(f'{image_path}  {uf_execution_time}  {cv_execution_time}  ')
    
    
    
