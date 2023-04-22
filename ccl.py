@@ -249,36 +249,48 @@ def connected_component_label_cv(path, image=None):
   _, labels = cv2.connectedComponents(img)
   return labels
 
+import sys
+import os
+import time
 
 if __name__ == "__main__":
-  import sys
-  if len(sys.argv) > 1:  # At least 1 command line parameter
-    image_path = str(sys.argv[1])
-    if(len(sys.argv) > 2):  # At least 2
-      connectivity_type = int(sys.argv[2])
-    else:
-      connectivity_type = CONNECTIVITY_8
-    image = Image.open(image_path)
+  print('#  UnionFind_UFPC  Spaghetti_UFPC')
+  for filename in os.listdir('images/'):
+    #image_path = str(sys.argv[1])
+    # if(len(sys.argv) > 2):  # At least 2
+    #   connectivity_type = int(sys.argv[2])
+    # else:
+    #   connectivity_type = CONNECTIVITY_8
+    
+    connectivity_type = CONNECTIVITY_8
+    # image = Image.open('images/'+filename)
 
     fig, axs = plt.subplots(1, 3, constrained_layout=True)
 
-    bool_image = image_to_2d_bool_array(image)
+    # bool_image = image_to_2d_bool_array(image)
     # bool_image = gen_image_3()
-    # bool_image = cv2.imread(image_path, 0)
-
+    image_path = 'images/'+filename
+    bool_image = cv2.imread(image_path, 0)
     axs[0].imshow(bool_image, cmap='gray')
     axs[0].axis('off')
     axs[0].set_title('Original')
 
+    uf_start = time.time()
     cll_result = connected_component_labelling(bool_image, connectivity_type)
+    uf_execution_time =  round(time.time()-uf_start,4)
     # connected_component_label(image_path)
+    cv_start = time.time()
     cv_result = connected_component_label_cv("", bool_image.astype(np.uint8))
-    # print_image(result)
-
+    cv_execution_time = round(time.time()- cv_start,4)
+    
+    
+    print(f'{image_path}  {uf_execution_time} {cv_execution_time} ')
+   
+   
+   
     axs[1].imshow(cll_result, cmap=get_cmap(cll_result))
     axs[1].axis('off')
     axs[1].set_title('UnionFind')
-
     axs[2].imshow(cv_result, cmap=get_cmap(cv_result))
     axs[2].axis('off')
     axs[2].set_title("Spaghetti")
@@ -289,9 +301,8 @@ if __name__ == "__main__":
     # 			c2 = cv-result[j, i]
     # 			axs[2].text(i, j, str(c2), va='center', ha='center')
     # 			axs[1].text(i, j, str(c1), va='center', ha='center')
-
-    # plt.savefig('result/result7.png', dpi=1000)
-    plt.show()
+    plt.savefig(f'result/{filename}', dpi=1000)
+    # plt.show()
 
 
 # Run in Python
