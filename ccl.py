@@ -304,9 +304,3 @@ if __name__ == "__main__":
     plt.savefig(f'result/{filename}', dpi=1000)
     # plt.show()
 
-
-# Run in Python
-# image = Image.open("./images/second_pass.png")
-# bool_image = image_to_2d_bool_array(image)
-# output = connected_component_labelling(bool_image, CONNECTIVITY_4)
-# print(output)
